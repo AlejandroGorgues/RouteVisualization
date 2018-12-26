@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:RouteVisualization"
+             x:Class="RouteVisualization.MainPage">
+
+    <Grid>
+
+        <local:CustomMap x:Name="mapView" MapType="Street" HorizontalOptions="End" Margin="582,0,0,0" WidthRequest="908" HeightRequest="990"/>
+        <Label HorizontalOptions="Start" VerticalOptions="Start" Margin="63,33,0,0" Text="Lugar inicio"/>
+        <Entry x:Name="lugarIncialTextBox" HorizontalOptions="Start" VerticalOptions="Start" Margin="172,27,0,0" Text="" WidthRequest="185"/>
+        <Label HorizontalOptions="Start" VerticalOptions="Start" Margin="63,81,0,0" Text="Lugar final" />
+        <Entry x:Name="lugarFinalTextBox" HorizontalOptions="Start" VerticalOptions="Start" Margin="172,75,0,0" Text="" WidthRequest="185"/>
+        <Button HorizontalOptions="Start" VerticalOptions="Start" Text="Buscar ruta" Margin="216,129,0,0" Clicked="Button_Click"/>
+        <Editor HorizontalOptions="Start" VerticalOptions="Start" x:Name="rutaTextBox" Margin="10,178,0,0" Text="" HeightRequest="504" WidthRequest="567"/>
+        <Label HorizontalOptions="Start" VerticalOptions="Start" Margin="243,715,0,0" Text="Punto"/>
+        <Label HorizontalOptions="Start" VerticalOptions="Start" Margin="10,759,0,0" Text="Latitud:"/>
+        <Label HorizontalOptions="Start" VerticalOptions="Start" Margin="10,825,0,0" Text="Longitud:"/>
+        <Label HorizontalOptions="Start" VerticalOptions="Start" Margin="172,759,0,0" Text="Distancia recorrido:"/>
+        <Label HorizontalOptions="Start" VerticalOptions="Start" Margin="172,811,0,0" Text="Tiempo de recorrido:"/>
+        <Picker HorizontalOptions="Start" VerticalOptions="Start" x:Name="warningsCB" Margin="10,872,0,0" Title="Advertencias" SelectedIndexChanged="pickerClicked"/>
+        <Entry HorizontalOptions="Start" VerticalOptions="Start" x:Name="latitudTB" Margin="87,753,0,0" Text="" WidthRequest="71"/>
+        <Entry HorizontalOptions="Start" VerticalOptions="Start" x:Name="longitudTB" Margin="87,819,0,0" Text="" WidthRequest="71"/>
+        <Entry HorizontalOptions="Start" VerticalOptions="Start" x:Name="distanciaTB" Margin="323,753,0,0" Text="" WidthRequest="84"/>
+        <Entry HorizontalOptions="Start" VerticalOptions="Start" x:Name="tiempoTB" Margin="323,816,0,0" Text="" WidthRequest="84"/>
+        <Editor HorizontalOptions="Start" VerticalOptions="Start" x:Name="warningsTB" Margin="172,888,0,0" Text="" HeightRequest="97" WidthRequest="405"/>
+        <Label HorizontalOptions="Start" VerticalOptions="Start" Margin="429,786,0,0" Text="Señales:"/>
+        <Editor HorizontalOptions="Start" VerticalOptions="Start" x:Name="signalsTB" Margin="495,754,0,0" Text="" HeightRequest="94" WidthRequest="77"/>
+
+    </Grid>
+
+</ContentPage>
