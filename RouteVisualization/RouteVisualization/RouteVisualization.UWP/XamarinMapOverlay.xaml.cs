@@ -1,0 +1,47 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
+using Windows.System;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Navigation;
+using Xamarin.Forms;
+
+// La plantilla de elemento Página en blanco está documentada en https://go.microsoft.com/fwlink/?LinkId=234238
+
+namespace RouteVisualization.UWP
+{
+    /// <summary>
+    /// Una página vacía que se puede usar de forma independiente o a la que se puede navegar dentro de un objeto Frame.
+    /// </summary>
+    public sealed partial class XamarinMapOverlay : UserControl
+    {
+        CustomPin customPin;
+        public XamarinMapOverlay(CustomPin pin)
+        {
+            this.InitializeComponent();
+            customPin = pin;
+            SetupData();
+        }
+
+        void SetupData()
+        {
+            
+            Label.Text = customPin.Label;
+        }
+
+        private void OnInfoButtonTapped(object sender, TappedRoutedEventArgs e)
+        {
+            MessagingCenter.Send(customPin.Position.Latitude + "," + customPin.Position.Longitude, "PinMostrar");
+        }
+    }
+}

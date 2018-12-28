@@ -6,6 +6,7 @@ namespace RouteVisualization
 {
     class PuntoBing
     {
+        
         private double latitude;
         private double longitude;
         private string accion;
@@ -41,5 +42,9 @@ namespace RouteVisualization
         public List<string> Nombre { get => nombre; set => nombre = value; }
         public List<string> Signs { get => signs; set => signs = value; }
         internal List<Warning> Warnings { get => warnings; set => warnings = value; }
+
+
+        public void probar() {
+        }
     }
 }

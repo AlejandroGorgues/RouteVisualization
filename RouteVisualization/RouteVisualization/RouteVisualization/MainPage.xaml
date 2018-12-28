@@ -5,39 +5,45 @@
              xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
              x:Class="RouteVisualization.MainPage">
 
-    <StackLayout Orientation="Horizontal" x:Name="mainStack">
+    <StackLayout Orientation="Horizontal" x:Name="mainStack" Margin="50,0,0,0">
         <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
 
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
                 <Label HorizontalOptions="Start" VerticalOptions="Start" Text="Lugar inicio"/>
-                <Entry x:Name="lugarIncialTextBox" HorizontalOptions="Start" VerticalOptions="Start" Text="" WidthRequest="185"/>
+                <Entry x:Name="lugarIncialTextBox" HorizontalOptions="Start" VerticalOptions="Start" Text="" WidthRequest="250"/>
             </StackLayout>
 
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
                 <Label HorizontalOptions="Start" VerticalOptions="Start" Text="Lugar final" />
-                <Entry x:Name="lugarFinalTextBox" HorizontalOptions="Start" VerticalOptions="Start" Text="" WidthRequest="185"/>
+                <Entry x:Name="lugarFinalTextBox" HorizontalOptions="Start" VerticalOptions="Start" Text="" WidthRequest="250"/>
             </StackLayout>
 
             <Button HorizontalOptions="Center" VerticalOptions="Start" Text="Buscar ruta" Clicked="Button_Click"/>
-            <Editor HorizontalOptions="FillAndExpand" VerticalOptions="Start" x:Name="rutaE" Text="" HeightRequest="504" WidthRequest="567"/>
+            <Editor HorizontalOptions="FillAndExpand" VerticalOptions="Start" x:Name="rutaE" Text="" HeightRequest="470" WidthRequest="567"/>
             <Label HorizontalOptions="Center" VerticalOptions="Start" Text="Punto"/>
 
             <StackLayout Orientation="Horizontal"  HorizontalOptions="Center">
 
                 <Label HorizontalOptions="Start" VerticalOptions="Start" Text="Latitud:"/>
-                <Entry HorizontalOptions="Start" VerticalOptions="Start" x:Name="latitudE" Text="" WidthRequest="71"/>
+                <Entry HorizontalOptions="Start" VerticalOptions="Start" x:Name="latitudE" Text="" WidthRequest="81"/>
                 <Label HorizontalOptions="Start" VerticalOptions="Start" Text="Longitud:"/>
-                <Entry HorizontalOptions="Start" VerticalOptions="Start" x:Name="longitudE" Text="" WidthRequest="71"/>
+                <Entry HorizontalOptions="Start" VerticalOptions="Start" x:Name="longitudE" Text="" WidthRequest="81"/>
                 <Label HorizontalOptions="Start" VerticalOptions="Start" Text="Señales:"/>
-                <Editor HorizontalOptions="Start" VerticalOptions="Start" x:Name="signalsE" Text="" HeightRequest="94" WidthRequest="77"/>
+                <Editor HorizontalOptions="Start" VerticalOptions="Start" x:Name="signalsE" Text="" HeightRequest="70" WidthRequest="77"/>
 
             </StackLayout>
             <StackLayout Orientation="Horizontal"  HorizontalOptions="Center">
 
-                <Label HorizontalOptions="Start" VerticalOptions="Start" Text="Distancia recorrido:"/>
-                <Entry HorizontalOptions="Start" VerticalOptions="Start" x:Name="distanciaE" Text="" WidthRequest="84"/>
-                <Label HorizontalOptions="Start" VerticalOptions="Start" Text="Tiempo de recorrido:"/>
-                <Entry HorizontalOptions="Start" VerticalOptions="Start" x:Name="tiempoE" Text="" WidthRequest="84"/>
+                <Label HorizontalOptions="Start" VerticalOptions="Start" Text="Distancia hasta el siguiente punto:"/>
+                <Entry HorizontalOptions="Start" VerticalOptions="Start" x:Name="distanciaE" Text="" WidthRequest="90"/>
+                <Label HorizontalOptions="Start" VerticalOptions="Start" Text="Tiempo de recorrido hasta el siguiente punto:"/>
+                <Entry HorizontalOptions="Start" VerticalOptions="Start" x:Name="tiempoE" Text="" WidthRequest="90"/>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" >
+
+                <Label HorizontalOptions="Start" VerticalOptions="Start" Text="Acción a realizar:"/>
+                <Entry HorizontalOptions="FillAndExpand" VerticalOptions="Start" x:Name="accionE" Text="" WidthRequest="400"/>
             </StackLayout>
 
             <StackLayout Orientation="Horizontal"  HorizontalOptions="Center">
