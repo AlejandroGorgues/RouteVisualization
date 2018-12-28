@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+using System.Diagnostics;
 #if WINDOWS_APP || WINDOWS_PHONE_APP || WINDOWS_UWP
 using Windows.Data.Json;
 #endif
@@ -18,6 +17,7 @@ namespace RouteVisualization
 
         Pin mapIconStart = new Pin();
         Pin mapIconEnd = new Pin();
+        CustomMap mapView;
         Pin mapIconRuta;
         String urlInicial = "http://dev.virtualearth.net/REST/V1/Routes/Driving?wp.0=";
         String urlMedio = "&wp.1=";
@@ -27,6 +27,7 @@ namespace RouteVisualization
 #endif
         ArrayList puntos = new ArrayList();
         ArrayList warningItems = new ArrayList();
+        //List<CustomPin> customPins = new List<CustomPin>();
         int iteracionEscritura = 1;
 
 
@@ -34,13 +35,30 @@ namespace RouteVisualization
         public MainPage()
         {
             this.InitializeComponent();
-
+            mapView = new CustomMap
+            {
+                MapType = MapType.Street,
+                WidthRequest = 908,
+                HeightRequest = 990,
+                HorizontalOptions = LayoutOptions.End,
+                Margin = new Thickness(582, 0, 0, 0)
+            };
 
         }
 
         private void Button_Click(object sender, EventArgs e)
         {
 
+            var mapViewAUX = new CustomMap
+            {
+                MapType = MapType.Street,
+                WidthRequest = 908,
+                HeightRequest = 990,
+                HorizontalOptions = LayoutOptions.FillAndExpand
+            };
+            
+            rutaE.Text = "";
+            clearContainers();
             Position lastPoint = new Position(), currentPoint;
 
             Device.BeginInvokeOnMainThread(async () =>
@@ -50,7 +68,7 @@ namespace RouteVisualization
                 //Si ha obtenido una ruta como respuesta, escribe en el mapa
                 if (stream.IsSuccessStatusCode)
                 {
-                    String str = await stream.Content.ReadAsStringAsync();
+                    string str = await stream.Content.ReadAsStringAsync();
 #if WINDOWS_APP || WINDOWS_PHONE_APP || WINDOWS_UWP
                     JsonValue jsonValue = JsonValue.Parse(str);
                     arrayRuta = jsonValue.GetObject().GetNamedArray("resourceSets").GetObjectAt(0).GetNamedArray("resources").GetObjectAt(0).GetNamedArray("routeLegs").GetObjectAt(0).GetNamedArray("itineraryItems");
@@ -70,18 +88,21 @@ namespace RouteVisualization
 
                         mapIconRuta = new Pin
                         {
+                            Type = PinType.Place,
                             Position = currentPoint,
-                            Label = nombres
+                            Label = "custom pin",
+                            Address = "asdfsfdsdf"
                         };
 
                         mapIconRuta.Clicked += (object senderPin, EventArgs ePin) => {
                             pinClicked(senderPin, ePin);
                         };
 
-                        mapView.Pins.Add(mapIconRuta);
+                        mapViewAUX.Pins.Add(mapIconRuta);
 
                         puntos.Add(puntoBing);
                         escribePunto(puntoBing);
+                        
 
                         //Si el punto actual es el último, pasa a ser el actual en el código
 
@@ -89,7 +110,7 @@ namespace RouteVisualization
                         {
 
                             // Obtiene la ruta entre el punto anterior y el actual.
-                            mapView.RouteCoordinates.Add(new Position(puntoBing.Latitude, puntoBing.Longitude));
+                            mapViewAUX.RouteCoordinates.Add(new Position(puntoBing.Latitude, puntoBing.Longitude));
 
                             //El punto actual se convierte en el anterior
                             lastPoint = currentPoint;
@@ -99,12 +120,16 @@ namespace RouteVisualization
                             lastPoint = currentPoint;
                         }
                     }
-                    //mapView.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(37.79752, -122.40183), Distance.FromMiles(1.0)));
+                    iteracionEscritura = 1;
+                    JsonArray firstCoordinates = first.GetObject().GetNamedObject("maneuverPoint").GetNamedArray("coordinates");
+                 mapViewAUX.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(firstCoordinates.GetNumberAt(0), firstCoordinates.GetNumberAt(1)), Distance.FromMiles(100)));
+                    mainStack.Children[1] = mapViewAUX;
+
 #endif
                 }
                 else
                 {
-                    rutaTextBox.Text = "Mal";
+                    await DisplayAlert("Alert", "Error al obtener los datos", "OK");
                 }
             });
         }
@@ -168,7 +193,7 @@ namespace RouteVisualization
         private void escribePunto(PuntoBing punto)
         {
 
-            rutaTextBox.Text = rutaTextBox.Text + Environment.NewLine + "Acción " + iteracionEscritura + " : " + Environment.NewLine + " A " + punto.Distancia + "Km " + punto.Accion;
+            rutaE.Text = rutaE.Text + Environment.NewLine + "Acción " + iteracionEscritura + " : " + Environment.NewLine + " A " + punto.Distancia + "Km " + punto.Accion;
             iteracionEscritura += 1;
         }
 
@@ -178,19 +203,20 @@ namespace RouteVisualization
             Position locationIcon = pinMap.Position;
             ArrayList listNumberWarning = new ArrayList();
             var warningI = 1;
-            warningsTB.Text = "";
+            warningsE.Text = "";
+            signalsE.Text = "";
 
             foreach (PuntoBing puntoBing in puntos)
             {
                 if (puntoBing.Latitude == Math.Round(locationIcon.Latitude, 5) && puntoBing.Longitude == Math.Round(locationIcon.Longitude, 5))
                 {
-                    latitudTB.Text = puntoBing.Latitude.ToString();
-                    longitudTB.Text = puntoBing.Longitude.ToString();
-                    distanciaTB.Text = puntoBing.Distancia.ToString();
-                    tiempoTB.Text = puntoBing.Tiempo.ToString();
+                    latitudE.Text = puntoBing.Latitude.ToString();
+                    longitudE.Text = puntoBing.Longitude.ToString();
+                    distanciaE.Text = puntoBing.Distancia.ToString();
+                    tiempoE.Text = puntoBing.Tiempo.ToString();
                     foreach (var signal in puntoBing.Signs)
                     {
-                        signalsTB.Text =  signal.ToString() + Environment.NewLine;
+                        signalsE.Text =  signal.ToString() + Environment.NewLine;
                     }
 
                     foreach (var warning in puntoBing.Warnings)
@@ -199,7 +225,7 @@ namespace RouteVisualization
                         listNumberWarning.Add("Advertencia: " + warningI);
                         warningI++;
                     }
-                    warningsCB.ItemsSource = listNumberWarning;
+                    warningsPicker.ItemsSource = listNumberWarning;
 
 
                 }
@@ -217,32 +243,27 @@ namespace RouteVisualization
             var index = comboB.SelectedIndex;
             if (index > -1)
             {
-                Console.WriteLine("aqui");
                 Warning wSelected = warningItems[index] as Warning;
-                /*string grado = "Grado: " + wSelected.Grado;
-                string descripcion = Environment.NewLine + "Descripción: " + wSelected.Descripcion;
-                string inicio = Environment.NewLine + "Inicio: " + wSelected.CoordinateStart;
-                string final = Environment.NewLine + "Final: " + wSelected.CoordinateEnd;
-
-                warningsTB.Text.Insert(0, grado + descripcion + inicio + final);*/
-
-                warningsTB.Text = "Grado: " + wSelected.Grado;
-                warningsTB.Text = warningsTB.Text + Environment.NewLine + "Descripción: " + wSelected.Descripcion;
-                warningsTB.Text = warningsTB.Text + Environment.NewLine + "Inicio: " + wSelected.CoordinateStart;
-                warningsTB.Text = warningsTB.Text + Environment.NewLine + "Final: " + wSelected.CoordinateEnd;
+                warningsE.Text = "Grado: " + wSelected.Grado;
+                warningsE.Text = warningsE.Text + Environment.NewLine + "Descripción: " + wSelected.Descripcion;
+                warningsE.Text = warningsE.Text + Environment.NewLine + "Inicio: " + wSelected.CoordinateStart;
+                warningsE.Text = warningsE.Text + Environment.NewLine + "Final: " + wSelected.CoordinateEnd;
 
             }
 
         }
-    }
 
-    public class CustomMap : Map
-    {
-        public List<Position> RouteCoordinates { get; set; }
-
-        public CustomMap()
+        //Método que elimina el texto que describe el Pin seleccionado
+        private void clearContainers()
         {
-            RouteCoordinates = new List<Position>();
+            warningsPicker.ItemsSource = null;
+            warningsE.Text = "";
+            latitudE.Text = "";
+            longitudE.Text = "";
+            distanciaE.Text = "";
+            tiempoE.Text = "";
+            signalsE.Text = "";
+
         }
     }
 }
