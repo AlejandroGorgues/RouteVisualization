@@ -14,7 +14,7 @@
             </StackLayout>
 
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                <Label HorizontalOptions="Start" VerticalOptions="Start" Text="Lugar final" />
+                <Label HorizontalOptions="Start" VerticalOptions="Start" Text="Lugar final " />
                 <Entry x:Name="lugarFinalTextBox" HorizontalOptions="Start" VerticalOptions="Start" Text="" WidthRequest="250"/>
             </StackLayout>
 

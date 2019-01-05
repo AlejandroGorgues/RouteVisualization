@@ -75,22 +75,17 @@ namespace RouteVisualization
                     {
                         PuntoBing puntoBing = obtenerPunto(puntoRuta.GetObject());
 
-                        string nombres = "";
-                        if(puntoBing.Nombre.Count > 1){
-                            foreach (string nombre in puntoBing.Nombre)
-                                {
-                                    nombres = nombre + "/" + Environment.NewLine + nombres ;
-                                }
-                        }else if (puntoBing.Nombre.Count == 1){
-                                nombres = puntoBing.Nombre[0];
-                        }
+                        List<string> nombres = new List<string>();
+                        foreach (string nombre in puntoBing.Nombre)
+                            {                
+                                nombres.Add(nombre);
+                            }
                         
-
                         mapIconRuta = new CustomPin
                         {
                             Type = PinType.Place,
                             Position = new Position(puntoBing.Latitude, puntoBing.Longitude),
-                            Label = nombres,
+                            Label = String.Join("/", nombres.ToArray()),
                             Id = "Ruta"
                         };
 
@@ -253,6 +248,7 @@ namespace RouteVisualization
             distanciaE.Text = "";
             tiempoE.Text = "";
             signalsE.Text = "";
+            accionE.Text = "";
 
         }
     }

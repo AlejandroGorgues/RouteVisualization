@@ -33,6 +33,7 @@ namespace RouteVisualization.UWP
                 nativeMap.MapElementClick -= OnMapElementClick;
                 nativeMap.Children.Clear();
                 mapOverlay = null;
+                
                 nativeMap = null;
             }
 
